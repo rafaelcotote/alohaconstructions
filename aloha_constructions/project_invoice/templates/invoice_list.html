@@ -1,0 +1,30 @@
+{% extends 'adminlte/base.html' %}
+
+{% block content %}
+<h2>Invoice List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Invoice Number</th>
+            <th>Client Name</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invoice in invoices %}
+        <tr>
+            <td>{{ invoice.invoice_number }}</td>
+            <td>{{ invoice.client_name }}</td>
+            <td>{{ invoice.date }}</td>
+            <td>{{ invoice.total_amount }}</td>
+            <td>
+                <a href="{% url 'invoice_detail' invoice.pk %}" class="btn btn-info">View</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'invoice_create' %}" class="btn btn-primary">Create New Invoice</a>
+{% endblock %}

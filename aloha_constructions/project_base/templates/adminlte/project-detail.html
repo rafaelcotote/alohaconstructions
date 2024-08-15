@@ -1,0 +1,48 @@
+{% extends 'adminlte/base.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>Project Details</title>
+{% endblock titulo %}
+
+{% block conteudo %}
+<div class="container-fluid bg-white">
+    <h3>Project Details</h3>
+    <hr>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <label for="project_name">Project Name</label>
+                    <input type="text" id="project_name" class="form-control" value="{{ project.project_name }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="client_name">Client Name</label>
+                    <input type="text" id="client_name" class="form-control" value="{{ project.client_name }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="project_description">Project Description</label>
+                    <textarea id="project_description" class="form-control" rows="4" disabled>{{ project.project_description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="project_adress">Project Address</label>
+                    <textarea id="project_adress" class="form-control" rows="2" disabled>{{ project.project_adress }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="estimated_budget">Estimated Budget</label>
+                    <input type="text" id="estimated_budget" class="form-control" value="{{ project.estimated_budget }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="total_amount_spend">Total Amount Spent</label>
+                    <input type="text" id="total_amount_spend" class="form-control" value="{{ project.total_amount_spend }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="estimated_project_duration">Estimated Project Duration</label>
+                    <input type="text" id="estimated_project_duration" class="form-control" value="{{ project.estimated_project_duration }}" disabled>
+                </div>
+                <a href="{% url 'projectlist' %}" class="btn btn-secondary">Return</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock conteudo %}

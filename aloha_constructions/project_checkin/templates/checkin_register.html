@@ -1,0 +1,43 @@
+{% extends 'adminlte/base.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="col-md-12">
+    <div class="card card-secondary">
+        <div class="card-header">
+            <h3 class="card-title">Check-in Register</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            Visit <a href="https://pypi.org/project/django-tempus-dominus/">Aloha Constructions</a> for more information.
+        </div>
+        <!-- /.card-footer -->
+    </div>
+</div>
+
+<!-- Include Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Include Tempus Dominus Bootstrap 4 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Include Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Include Tempus Dominus Bootstrap 4 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"></script>
+{% endblock conteudo %}

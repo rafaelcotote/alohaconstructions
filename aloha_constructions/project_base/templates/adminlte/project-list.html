@@ -1,0 +1,86 @@
+{% extends 'adminlte/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+<title>Show Projects</title>
+{% endblock titulo %}
+
+{% block conteudo %}
+
+<div class="container-fluid bg-white">
+    <h3>Project List</h3>
+    
+    <hr>
+    
+    <!-- Filter Form -->
+    <form method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="id_project_name">Project Name</label>
+                    <input type="text" name="project_name" id="id_project_name" class="form-control" value="{{ form.project_name.value }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="id_client_name">Client Name</label>
+                    <input type="text" name="client_name" id="id_client_name" class="form-control" value="{{ form.client_name.value }}">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    <hr>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive bg-white">
+                <table class="table table-striped" id="tabela-listar">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Client Name</th>
+                            <th>Project Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for cadastroprojeto in object_list %}
+                        <tr>
+                            <td>{{ cadastroprojeto.project_name }}</td>
+                            <td>{{ cadastroprojeto.client_name }}</td>
+                            <td>{{ cadastroprojeto.project_description }}</td>
+                            <td>
+                                <a href="{% url 'projectdetail' cadastroprojeto.pk %}" class="btn btn-info btn-circle btn-sm" title="Visualizar">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="{% url 'projectedit' cadastroprojeto.pk %}" class="btn btn-secondary btn-circle btn-sm" title="Editar">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">Nenhum projeto cadastrado</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock conteudo %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.13.1/b-2.3.3/sp-2.1.0/sl-1.5.0/datatables.min.js"></script>
+{% endblock scripts %}

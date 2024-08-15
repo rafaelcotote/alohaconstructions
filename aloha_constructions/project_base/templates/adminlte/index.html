@@ -1,0 +1,157 @@
+{% extends 'adminlte/base.html' %}
+{%load static %}
+{% block titulo %}
+  <title>Aloha Constructions | Dashboard</title>
+{% endblock titulo %}
+{% block conteudo %}
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ quantidade_registros }}</h3>
+
+                <p>New projects</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>5</h3>
+
+                <p>completed work</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ quantidade_usuarios }}</h3>
+
+                <p>User Registrations</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>1</h3>
+
+                <p>Delayed Works</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+
+                <p class="card-text">
+                  Some quick example text to build on the card title and make up the bulk of the card's
+                  content.
+                </p>
+
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </div>
+            </div>
+            <!-- TO DO List -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="ion ion-clipboard mr-1"></i>
+                  To Do List
+                </h3>
+
+                <div class="card-tools">
+                  <ul class="pagination pagination-sm">
+                    <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
+                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <a href="{% url 'new_task' %}" class="btn btn-primary mb-2">Nova Tarefa</a>
+                <ul class="todo-list" data-widget="todo-list">
+                    {% for task in tasks %}
+                    <li>
+                        <span class="handle">
+                            <i class="fas fa-ellipsis-v"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </span>
+                        <div class="icheck-primary d-inline ml-2">
+                            <input type="checkbox" value="" name="{{ task.id }}" id="todoCheck{{ task.id }}">
+                            <label for="todoCheck{{ task.id }}"></label>
+                        </div>
+                        <span class="text">{{ task.text }}</span>
+                        <small class="badge badge-{{ task.label_color }}"><i class="far fa-clock"></i> {{ task.estimated_time }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+              <!-- /.card-body -->
+
+            </div><!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+          
+           
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h5 class="m-0">Featured</h5>
+            </div>
+            <div class="card-body">
+              <h6 class="card-title">Special title treatment</h6>
+
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- /.content -->
+{% endblock conteudo %}

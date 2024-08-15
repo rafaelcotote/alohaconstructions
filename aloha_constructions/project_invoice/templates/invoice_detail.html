@@ -1,0 +1,16 @@
+{% extends 'adminlte/base.html' %}
+
+{% block content %}
+<h2>Invoice Details</h2>
+<p><strong>Invoice Number:</strong> {{ object.invoice_number }}</p>
+<p><strong>Client Name:</strong> {{ object.client_name }}</p>
+<p><strong>Date:</strong> {{ object.date }}</p>
+<p><strong>Total Amount:</strong> {{ object.total_amount }}</p>
+<p><strong>Project Name:</strong> {{ object.project_name }}</p>
+<p><strong>Project Description:</strong> {{ object.project_description }}</p>
+<p><strong>Project Address:</strong> {{ object.project_address }}</p>
+<p><strong>Estimated Budget:</strong> {{ object.estimated_budget }}</p>
+<p><strong>Total Amount Spent:</strong> {{ object.total_amount_spent }}</p>
+<p><strong>Estimated Project Duration:</strong> {{ object.estimated_project_duration }}</p>
+<a href="{% url 'invoice_list' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}

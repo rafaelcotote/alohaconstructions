@@ -1,0 +1,44 @@
+{% extends 'adminlte/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+<title>Show registros</title>
+{% endblock titulo %}
+
+{% block conteudo %}
+<div class="container-fluid bg-white">
+    <h3>Checks</h3>
+
+        <hr>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive bg-white">
+                    <table class="table table-striped" id="tabela-listar">
+                        <thead>
+                            <tr>
+                                <th>Data e Hora</th>
+                                <th>Projeto</th>
+                                <th>Tipo de Registro</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                {% for registro in registros %}
+                                <tr>
+                                    <td>{{ registro.data_registro }}</td>
+                                    <td>{{ registro.projeto }}</td>
+                                    <td>{{ registro.get_tipo_registro_display }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>        
+{% endblock conteudo %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.13.1/b-2.3.3/sp-2.1.0/sl-1.5.0/datatables.min.js"></script>
+    
+{% endblock scripts %}
+

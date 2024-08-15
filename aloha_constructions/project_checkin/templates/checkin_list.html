@@ -1,0 +1,104 @@
+{% extends 'adminlte/base.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Check-in List</h3>
+    </div>
+    <div class="card-body">
+        <form method="GET">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="employee">Employee:</label>
+                        <select class="form-control" id="employee" name="employee">
+                            <option value="" selected>Any</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="project">Project:</label>
+                        <select class="form-control" id="project" name="project">
+                            <option value="" selected>Any</option>
+                            {% for project in projects %}
+                            <option value="{{ project.id }}">{{ project.project_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="client">Client:</label>
+                        <select class="form-control" id="client" name="client">
+                            <option value="" selected>Any</option>
+                            {% for client in clients %}
+                            <option value="{{ client.id }}">{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="date_register">Date Register:</label>
+                        <input type="date" class="form-control" id="date_register" name="date_register">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="type_register">Type Register:</label>
+                        <select class="form-control" id="type_register" name="type_register">
+                            <option value="" selected>Any</option>
+                            <option value="Check-in">Check-in</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Check-out">Check-out</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{% url 'checkin_list' %}" class="btn btn-secondary ml-2">Clear Filter</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Type Register</th>
+                    <th>Activity</th>
+                    <th>Date Register</th>
+                    <th>Check-out</th>
+                    <th>Hours Worked</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for checkin_register in checkin_registers %}
+                <tr>
+                    <td>{{ checkin_register.employee }}</td>
+                    <td>{{ checkin_register.project }}</td>
+                    <td>{{ checkin_register.project.client_name }}</td>
+                    <td>{{ checkin_register.type_register }}</td>
+                    <td>{{ checkin_register.activity }}</td>
+                    <td>{{ checkin_register.date_register }}</td>
+                    <td>{{ checkin_register.check_out }}</td>
+                    <td>{{ checkin_register.hours_worked }} hours</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock conteudo %}
+
+

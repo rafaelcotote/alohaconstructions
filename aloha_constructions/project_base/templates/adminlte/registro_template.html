@@ -1,0 +1,30 @@
+<!-- checkin_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check-in</title>
+</head>
+<body>
+    <h1>Check-in</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>Usuário: {{ request.user }}</p>
+        <label for="projeto">Projeto:</label>
+        <select id="projeto" name="projeto">
+            {% for projeto in projetos %}
+                <option value="{{ projeto.id }}">{{ projeto.project_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="tipo_registro">Tipo de Registro:</label>
+        <select id="tipo_registro" name="tipo_registro">
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <button type="submit">Registrar Check-in</button>
+    </form>
+</body>
+</html>
+
+
+
