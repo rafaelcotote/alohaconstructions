@@ -8,7 +8,9 @@ from project_client.models import Client
 from django.utils import timezone
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def checkin_register(request):
     if request.method == 'POST':
         form = CheckinRegisterForm(request.POST, user=request.user)  # Passa o usuário logado para o formulário

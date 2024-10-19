@@ -16,10 +16,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Task
 from .form import TaskForm
+from django.contrib.auth.decorators import login_required
+
 
 #CreateView
 
-class ProjectCreate(CreateView):
+class ProjectCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = CadastroProjeto
     fields = ['project_name', 'project_description', 'client_name', 'project_adress', 'estimated_budget', 'total_amount_spend', 'estimated_project_duration']
@@ -34,7 +36,7 @@ class ProjectCreate(CreateView):
     def get_success_url(self):
         # Redireciona para a mesma página com um parâmetro de consulta de sucesso
         return reverse_lazy('projectadd') + '?success=true'
-
+    
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
@@ -45,7 +47,7 @@ class ProjectCreate(CreateView):
 
 ################UPDATE VIEW###############
 
-class ProjectUpdate(UpdateView):
+class ProjectUpdate(LoginRequiredMixin, UpdateView):
     model = CadastroProjeto
     form_class = CadastroProjetoForm
     template_name = 'adminlte/project_edit.html'
@@ -66,14 +68,14 @@ class ProjectUpdate(UpdateView):
 
 ################READ VIEW############### 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = CadastroProjeto
     template_name = 'adminlte/project-detail.html'
     context_object_name = 'projeto'
 
 ################LIST VIEW###############    
 
-class ProjectList(ListView):
+class ProjectList(LoginRequiredMixin, ListView):
     model = CadastroProjeto
     template_name = 'adminlte/project-list.html'
     context_object_name = 'object_list'
@@ -90,6 +92,7 @@ class ProjectList(ListView):
                 queryset = queryset.filter(client_name__name__icontains=client_name)
         return queryset
 
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ProjectFilterForm(self.request.GET)
@@ -98,6 +101,7 @@ class ProjectList(ListView):
 # Create your views here.
 
 # View index
+@login_required
 def index(request):
     # Quantidades dinâmicas do banco de dados
     quantidade_registros = CadastroProjeto.objects.count()
@@ -109,6 +113,7 @@ def index(request):
     tasks = paginator.get_page(page_number)  # Pega a página solicitada
     
     # Função para listar tarefas
+@login_required    
 def task_list(request):
     task_list = Task.objects.all()  # Obtenha todas as tarefas
     paginator = Paginator(task_list, 10)  # 10 tarefas por página
@@ -119,6 +124,7 @@ def task_list(request):
     return render(request, 'adminlte/task_list.html', {'tasks': tasks})
 
 # Função para criar nova tarefa
+@login_required
 def nova_tarefa(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -130,6 +136,7 @@ def nova_tarefa(request):
     return render(request, 'adminlte/new_task.html', {'form': form})
 
 # Função para editar tarefa
+@login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -141,6 +148,7 @@ def edit_task(request, task_id):
         form = TaskForm(instance=task)
     return render(request, 'adminlte/edit_task.html', {'form': form, 'task': task})
 
+@login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -149,6 +157,7 @@ def delete_task(request, task_id):
     return render(request, 'adminlte/confirm_delete.html', {'task': task})  # Se você quiser uma página de confirmação
 
 # View para a página inicial
+@login_required
 def index(request):
     quantidade_registros = CadastroProjeto.objects.count()
     quantidade_usuarios = User.objects.count()
@@ -174,10 +183,11 @@ def index(request):
         'tasks': tasks,
         'form': form,
     })
-
+@login_required
 def projectadd(request):
     return render(request, 'adminlte/project-add.html', {})
 
+@login_required
 def projectlist(request):
     return render(request, 'adminlte/project-list.html', {})
 
