@@ -24,6 +24,15 @@
                 </div>
                 <span class="text">{{ task.text }}</span>
                 <small class="badge badge-{{ task.label_color }}"><i class="far fa-clock"></i> {{ task.estimated_time }}</small>
+
+                <!-- Botão de editar -->
+                <a href="{% url 'edit_task' task.id %}" class="btn btn-warning btn-sm ml-2">Editar</a>
+                
+                <!-- Botão de excluir -->
+                <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm ml-2" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');">Excluir</button>
+                </form>
             </li>
             {% endfor %}
         </ul>

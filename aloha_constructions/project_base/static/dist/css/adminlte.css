@@ -53009,4 +53009,24 @@ a.text-muted:hover {
 .dark-mode .border-dark {
   border-color: #4b545c !important;
 }
+
+.task-item {
+  position: relative; /* Para posicionar os botões absolutos */
+}
+
+.edit-btn, .delete-btn {
+  display: none; /* Oculta os botões por padrão */
+  margin-left: 10px; /* Espaçamento entre os botões */
+}
+
+.task-item:hover .edit-btn {
+  display: inline; /* Exibe o botão de editar no hover */
+  color: yellow; /* Cor do botão de editar */
+}
+
+.task-item:hover .delete-btn {
+  display: inline; /* Exibe o botão de excluir no hover */
+  color: red; /* Cor do botão de excluir */
+}
+
 /*# sourceMappingURL=adminlte.css.map */

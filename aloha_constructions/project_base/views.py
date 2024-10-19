@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
@@ -96,20 +97,39 @@ class ProjectList(ListView):
 
 # Create your views here.
 
+# View index
+def index(request):
+    # Quantidades dinâmicas do banco de dados
+    quantidade_registros = CadastroProjeto.objects.count()
+    quantidade_usuarios = User.objects.count()
+    tasks_list = Task.objects.all()  # Obtenha todas as tarefas
+    paginator = Paginator(tasks_list, 10)  # 10 tarefas por página
+
+    page_number = request.GET.get('page')  # Obtenha o número da página da URL
+    tasks = paginator.get_page(page_number)  # Pega a página solicitada
+    
+    # Função para listar tarefas
 def task_list(request):
-    tasks = Task.objects.all()
+    task_list = Task.objects.all()  # Obtenha todas as tarefas
+    paginator = Paginator(task_list, 10)  # 10 tarefas por página
+
+    page_number = request.GET.get('page')  # Obtenha o número da página da URL
+    tasks = paginator.get_page(page_number)  # Pega a página solicitada
+
     return render(request, 'adminlte/task_list.html', {'tasks': tasks})
 
+# Função para criar nova tarefa
 def nova_tarefa(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('task_list')
+            return HttpResponseRedirect('/task-list/?success')
     else:
         form = TaskForm()
     return render(request, 'adminlte/new_task.html', {'form': form})
 
+# Função para editar tarefa
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
@@ -121,10 +141,39 @@ def edit_task(request, task_id):
         form = TaskForm(instance=task)
     return render(request, 'adminlte/edit_task.html', {'form': form, 'task': task})
 
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('task_list')  # Redireciona para a lista de tarefas após a exclusão
+    return render(request, 'adminlte/confirm_delete.html', {'task': task})  # Se você quiser uma página de confirmação
+
+# View para a página inicial
 def index(request):
     quantidade_registros = CadastroProjeto.objects.count()
     quantidade_usuarios = User.objects.count()
-    return render(request, 'adminlte/index.html', {'quantidade_registros': quantidade_registros, 'quantidade_usuarios': quantidade_usuarios})
+    tasks = Task.objects.all()
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/?success')
+    else:
+        form = TaskForm()
+
+    dados_grafico = {
+        'labels': ['Projetos', 'Usuários'],
+        'data': [quantidade_registros, quantidade_usuarios],
+    }
+
+    return render(request, 'adminlte/index.html', {
+        'quantidade_registros': quantidade_registros,
+        'quantidade_usuarios': quantidade_usuarios,
+        'dados_grafico': dados_grafico,
+        'tasks': tasks,
+        'form': form,
+    })
 
 def projectadd(request):
     return render(request, 'adminlte/project-add.html', {})

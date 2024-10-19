@@ -15,8 +15,11 @@ class ProjectFilterForm(forms.Form):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['text', 'completed', 'estimated_time']
+        fields = ['text', 'completed', 'estimated_time']  # O campo está correto?
         widgets = {
-            'time_estimate': forms.TextInput(attrs={'placeholder': 'HH:MM'}),
+            'estimated_time': forms.TextInput(attrs={
+                'placeholder': 'HH:MM', 
+                'id': 'id_estimated_time'  # Certifique-se de que o ID está correto
+            }),
         }
         

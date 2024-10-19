@@ -1,5 +1,5 @@
 {% extends 'adminlte/base.html' %}
-{%load static %}
+{% load static %}
 {% block titulo %}
   <title>Aloha Constructions | Dashboard</title>
 {% endblock titulo %}
@@ -13,7 +13,6 @@
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>{{ quantidade_registros }}</h3>
-
                 <p>New projects</p>
               </div>
               <div class="icon">
@@ -28,8 +27,7 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3>5</h3>
-
-                <p>completed work</p>
+                <p>Completed work</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -43,7 +41,6 @@
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3>{{ quantidade_usuarios }}</h3>
-
                 <p>User Registrations</p>
               </div>
               <div class="icon">
@@ -58,7 +55,6 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>1</h3>
-
                 <p>Delayed Works</p>
               </div>
               <div class="icon">
@@ -71,87 +67,139 @@
         </div>
         <!-- /.row -->
     </section>
+
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
         <div class="row">
+          <!-- System Data Overview Section -->
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
+                <h5 class="card-title">System Data Overview</h5>
                 <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
+                  System insights and data about ongoing tasks and performance.
                 </p>
 
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+                <!-- Gráfico usando Chart.js -->
+                <canvas id="myChart" width="400" height="200"></canvas>
               </div>
             </div>
+
             <!-- TO DO List -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ion ion-clipboard mr-1"></i>
-                  To Do List
-                </h3>
-
-                <div class="card-tools">
-                  <ul class="pagination pagination-sm">
-                    <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
-                  </ul>
-                </div>
+<div class="card">
+  <div class="card-header">
+      <h3 class="card-title">
+          <i class="ion ion-clipboard mr-1"></i>
+          To Do List
+      </h3>
+      <div class="card-tools">
+          <ul class="pagination pagination-sm">
+              {% if tasks.has_previous %}
+                  <li class="page-item">
+                      <a href="?page=1" class="page-link">&laquo;</a>
+                  </li>
+                  <li class="page-item">
+                      <a href="?page={{ tasks.previous_page_number }}" class="page-link">&lsaquo;</a>
+                  </li>
+              {% endif %}
+              {% for i in tasks.paginator.page_range %}
+                  <li class="page-item {% if tasks.number == i %}active{% endif %}">
+                      <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                  </li>
+              {% endfor %}
+              {% if tasks.has_next %}
+                  <li class="page-item">
+                      <a href="?page={{ tasks.next_page_number }}" class="page-link">&rsaquo;</a>
+                  </li>
+                  <li class="page-item">
+                      <a href="?page={{ tasks.paginator.num_pages }}" class="page-link">&raquo;</a>
+                  </li>
+              {% endif %}
+          </ul>
+      </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+      <a href="{% url 'new_task' %}" class="btn btn-primary mb-2">Nova Tarefa</a>
+      <ul class="todo-list" data-widget="todo-list">
+          {% for task in tasks %}
+          <li class="task-item">
+              <span class="handle">
+                  <i class="fas fa-ellipsis-v"></i>
+                  <i class="fas fa-ellipsis-v"></i>
+              </span>
+              <div class="icheck-primary d-inline ml-2">
+                  <input type="checkbox" value="" name="{{ task.id }}" id="todoCheck{{ task.id }}">
+                  <label for="todoCheck{{ task.id }}"></label>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <a href="{% url 'new_task' %}" class="btn btn-primary mb-2">Nova Tarefa</a>
-                <ul class="todo-list" data-widget="todo-list">
-                    {% for task in tasks %}
-                    <li>
-                        <span class="handle">
-                            <i class="fas fa-ellipsis-v"></i>
-                            <i class="fas fa-ellipsis-v"></i>
-                        </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="{{ task.id }}" id="todoCheck{{ task.id }}">
-                            <label for="todoCheck{{ task.id }}"></label>
-                        </div>
-                        <span class="text">{{ task.text }}</span>
-                        <small class="badge badge-{{ task.label_color }}"><i class="far fa-clock"></i> {{ task.estimated_time }}</small>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-              <!-- /.card-body -->
+              <span class="text">{{ task.text }}</span>
+              <small class="badge badge-{{ task.label_color }}"><i class="far fa-clock"></i> {{ task.estimated_time }}</small>
+              <!-- Botões de Editar e Excluir -->
+              <a href="{% url 'edit_task' task.id %}" class="fa fa-pen edit-btn"></a>
+              <a href="{% url 'delete_task' task.id %}" class="fa fa-trash delete-btn" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');"></a>
+          </li>
+          {% endfor %}
+      </ul>
+  </div>
+  <!-- /.card-body -->
+</div>
 
-            </div><!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
           
-           
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h5 class="m-0">Featured</h5>
-            </div>
-            <div class="card-body">
-              <h6 class="card-title">Special title treatment</h6>
+          </div>
 
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+          <!-- Featured Section -->
+          <div class="col-lg-6">
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h5 class="m-0">Featured</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title">Special title treatment</h6>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
             </div>
           </div>
-        
-          </div>
-          <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-
     <!-- /.content -->
+
+    <!-- Adicionando o script do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Recebendo os dados do template (passados pela view)
+      var labels = {{ dados_grafico.labels|safe }};
+      var data = {{ dados_grafico.data|safe }};
+      
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Estatísticas do Sistema',
+                  data: data,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    </script>
 {% endblock conteudo %}

@@ -2,6 +2,22 @@
 {% load static %}
 
 {% block conteudo %}
+<!-- Import Tempus Dominus CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<!-- Inputmask CDN from JSDelivr -->
+<script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+
+<!-- SweetAlert2 CSS via CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JavaScript via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">New Task</h3>
@@ -10,11 +26,43 @@
     <div class="card-body">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p }}  <!-- Certifique-se de que o form gerado tem o ID correto para o campo -->
             <button type="submit" class="btn btn-primary">Create Task</button>
         </form>
     </div>
     <!-- /.card-body -->
 </div>
 <!-- /.card -->
+
+<!-- Script to initialize timepicker, mask, and SweetAlert -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Verifique se o ID do campo está correto no HTML gerado
+        console.log($('#id_estimated_time')); // Verifique se o campo está sendo selecionado corretamente
+
+        // Initialize Tempus Dominus timepicker
+        $('#id_estimated_time').datetimepicker({
+            format: 'HH:mm',
+            icons: {
+                time: 'far fa-clock',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+            }
+        });
+
+        // Aplica a máscara de tempo usando Inputmask
+        Inputmask("99:99").mask("#id_estimated_time");
+
+        // Verifica se a URL contém 'success' e exibe SweetAlert2
+        if (window.location.search.includes('success')) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Your task has been created successfully.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+</script>
 {% endblock conteudo %}
