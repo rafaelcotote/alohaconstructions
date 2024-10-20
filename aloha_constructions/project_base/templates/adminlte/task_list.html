@@ -18,21 +18,25 @@
                     <i class="fas fa-ellipsis-v"></i>
                     <i class="fas fa-ellipsis-v"></i>
                 </span>
+                <!-- Checkbox -->
                 <div class="icheck-primary d-inline ml-2">
-                    <input type="checkbox" value="" name="{{ task.id }}" id="todoCheck{{ task.id }}">
+                    <input type="checkbox" value="{{ task.id }}" id="todoCheck{{ task.id }}">
                     <label for="todoCheck{{ task.id }}"></label>
                 </div>
+                <!-- Task Text -->
                 <span class="text">{{ task.text }}</span>
-                <small class="badge badge-{{ task.label_color }}"><i class="far fa-clock"></i> {{ task.estimated_time }}</small>
-
-                <!-- Botão de editar -->
-                <a href="{% url 'edit_task' task.id %}" class="btn btn-warning btn-sm ml-2">Editar</a>
-                
-                <!-- Botão de excluir -->
-                <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm ml-2" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');">Excluir</button>
-                </form>
+                <!-- Badge com estimativa de tempo -->
+                <small class="badge badge-{{ task.label_color }}">
+                    <i class="far fa-clock"></i> {{ task.estimated_time }}
+                </small>
+                <!-- Ferramentas: Editar e Excluir -->
+                <div class="tools">
+                    <a href="{% url 'edit_task' task.id %}" class="fas fa-edit"></a>
+                    <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="fas fa-trash" style="border:none;background:none;color:red;" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');"></button>
+                    </form>
+                </div>
             </li>
             {% endfor %}
         </ul>
